@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>사진 설문</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#111;color:#eee;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:480px;padding:16px;display:flex;flex-direction:column;gap:14px;flex:1}
+h1{font-size:20px;margin:8px 0}h2{font-size:16px;margin:6px 0}
+p,li{font-size:14px;line-height:1.6;color:#ccc}
+.card{background:#1c1c1e;border-radius:14px;padding:16px}
+button{font-size:16px;border:none;border-radius:12px;padding:14px;cursor:pointer;font-weight:600}
+.primary{background:#4a7dff;color:#fff;width:100%}
+.rate{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.rate button{flex:1;max-width:76px;height:64px;font-size:22px;background:#2c2c2e;color:#fff}
+.rate button:active{background:#4a7dff}
+img.photo{width:100%;max-height:56vh;object-fit:contain;border-radius:12px;background:#000}
+.prog{font-size:13px;color:#888;text-align:center}
+.q{font-size:15px;font-weight:700;text-align:center;line-height:1.5}
+label{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:#ccc;line-height:1.5}
+input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#222;color:#fff;font-size:16px}
+.anchor{font-size:13px;color:#aaa;line-height:1.7}
+.back{background:#2c2c2e;color:#aaa;font-size:13px;padding:8px 14px;border-radius:8px}
+.hidden{display:none}
+.bar{height:6px;background:#2c2c2e;border-radius:3px;overflow:hidden}.bar>div{height:100%;background:#4a7dff;width:0%}
+</style></head><body><div class="wrap" id="app"></div>
+<script>
+const M = {"version": "pilot_v1_2026-07-03", "sessions": {"PU": {"axis": "u", "pool": "pilot"}, "PA": {"axis": "a", "pool": "pilot"}, "MU": {"axis": "u", "pool": "main"}, "MA": {"axis": "a", "pool": "main"}}, "pilot": [2849, 2234, 2580, 2914, 3348, 2725, 3465, 2869, 1930, 1996, 2052, 684, 2348, 945, 3042, 3408, 3454, 2518, 198, 2535, 314, 2843, 2347, 248, 1997, 2984, 2439, 3368, 849, 2616, 674, 2970, 2565, 3508, 8437, 7379, 8554, 7266, 8521, 6963, 7479, 7733, 8637, 6990, 7394, 8512, 8505, 7039, 7038, 7787, 7407, 7400, 6956, 6946, 7512, 7800, 6971, 8301, 7840, 7625, 8401, 7163, 8343, 7450, 8191, 7730, 7032, 4447, 4474, 4766, 5576, 5014, 6111, 3755, 6559, 3870, 4010, 3828, 3711, 4988, 6730, 5523, 5094, 4367, 5240, 3862, 4494, 4504, 5763, 6188, 4780, 3782, 5456, 5243, 6081, 5304, 5095, 6757, 5835, 6866], "main": [147, 1930, 3347, 1997, 887, 2565, 3454, 1870, 1996, 2518, 2234, 1081, 2984, 3508, 163, 491, 2439, 198, 1967, 91, 3249, 942, 2052, 2580, 3573, 2763, 2914, 684, 2535, 438, 3368, 691, 2007, 3127, 2348, 3547, 1956, 607, 2929, 314, 3233, 849, 3348, 1836, 2494, 1830, 3583, 1842, 876, 1056, 932, 2843, 945, 2504, 2616, 3309, 2725, 1948, 602, 2732, 3675, 637, 614, 2237, 289, 674, 1093, 3350, 2738, 3334, 2347, 3042, 765, 2390, 3465, 1962, 2065, 3490, 3172, 501, 735, 2526, 890, 2970, 2736, 26, 2373, 1151, 248, 148, 2999, 1102, 3408, 2869, 3169, 2465, 3459, 2885, 1966, 2849, 6971, 8276, 6946, 8512, 7459, 8209, 8427, 7285, 8422, 8622, 7370, 8212, 7733, 8617, 6963, 7069, 8240, 7582, 8408, 7016, 7322, 7479, 8277, 7400, 7690, 7296, 7036, 8521, 8486, 8183, 8358, 8178, 7394, 7840, 8162, 8637, 7379, 7814, 8437, 7095, 7450, 8385, 6962, 6953, 7512, 7519, 8359, 8301, 7381, 7218, 6980, 7407, 6998, 7173, 8608, 7341, 8231, 7039, 7032, 7163, 8409, 7575, 8573, 7606, 7625, 7378, 6964, 7245, 7099, 8401, 7730, 7777, 6990, 8320, 7328, 7829, 8554, 8505, 7130, 7787, 8321, 6956, 8191, 7610, 8246, 6957, 7012, 8197, 8551, 8314, 7599, 7700, 8343, 7038, 7800, 7247, 7013, 7266, 6982, 8476, 5243, 3682, 4988, 6009, 6939, 5208, 4757, 4975, 5634, 6053, 6031, 5770, 5094, 3951, 5826, 6866, 3939, 3721, 5451, 4766, 6608, 4504, 5018, 6027, 4144, 4651, 5233, 5910, 4494, 5456, 6188, 5324, 6559, 4826, 4776, 3805, 3782, 6111, 5285, 6530, 6712, 3755, 5944, 5239, 3953, 4977, 4722, 4163, 3837, 5873, 6539, 3775, 4318, 5499, 4367, 3691, 5539, 4010, 3807, 4474, 6761, 6081, 6334, 4523, 5835, 5014, 3711, 3988, 5051, 4967, 4090, 6657, 6730, 5576, 5152, 5785, 4889, 3882, 5095, 3747, 4780, 5209, 5713, 6757, 5762, 3828, 3870, 5483, 4821, 4447, 4914, 5523, 4004, 6187, 6338, 3683, 3862, 5304, 5763, 5240], "golden": [{"uid": 21, "cls": "H"}, {"uid": 974, "cls": "H"}, {"uid": 1105, "cls": "H"}, {"uid": 1157, "cls": "H"}, {"uid": 770, "cls": "L"}, {"uid": 858, "cls": "L"}, {"uid": 2358, "cls": "L"}, {"uid": 2538, "cls": "L"}], "dups": [6757, 2580, 8521], "practice": [79, 197, 449, 450, 517]};
+const Q = {
+ u:{title:"옷 판단 도움 정도",
+    q:"당신이 이 옷을 살지 고민하는 쇼핑객이라고 상상하세요.<br>이 사진이 옷을 판단(핏·기장·실루엣·재질)하는 데<br>얼마나 도움이 됩니까?",
+    anchors:["1 = 판단 불가 (흐림·역광·옷이 거의 안 보임)","2 = 대부분 안 보임 (가림·어두움·잘림)","3 = 절반 정도 판단 가능 (예: 상의만 보임)","4 = 대체로 보이나 일부 아쉬움","5 = 핏·기장·재질까지 다 보여 바로 판단 가능"]},
+ a:{title:"사진의 미적 완성도",
+    q:"옷 정보와 무관하게,<br>사진 자체가 미적으로 얼마나 훌륭합니까?<br>(구도·색감·분위기)",
+    anchors:["1 = 구도가 무너짐·흐림·산만함","2 = 아쉬움이 많음","3 = 평범함","4 = 좋은 편 (저장하고 싶은 정도)","5 = 매우 훌륭함 (감성·구도·색감 모두)"]}};
+function hash(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return(h^=h>>>16)>>>0}}
+function rng(seed){let a=hash(seed)();return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(arr,r){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const app=document.getElementById('app');
+let S={code:'',sess:'',items:[],idx:0,recs:[],t0:0};
+const KEY=()=>'ps26_'+S.code+'_'+S.sess;
+function screen1(){app.innerHTML=`
+ <h1>사진 설문</h1>
+ <div class="card"><h2>안내 및 동의</h2>
+ <p>사진을 한 장씩 보고 1~5점을 매기는 설문입니다. 약 25~30분 걸리며, 언제든 중단할 수 있습니다(진행상황 자동 저장). 응답은 연구 목적으로 익명 처리되어 사용됩니다.</p>
+ <br><label><input type="checkbox" id="c1"> 만 18세 이상이며 자발적으로 참여합니다</label>
+ <label><input type="checkbox" id="c2"> 응답이 연구에 익명으로 사용되는 것에 동의합니다</label></div>
+ <div class="card"><h2>간단 확인</h2>
+ <label><input type="checkbox" id="c3"> 온라인에서 옷을 월 1회 이상 구경/구매합니다</label></div>
+ <div class="card"><h2>참여 코드</h2>
+ <p>안내받은 코드를 입력하세요.</p><br>
+ <input type="text" id="code" placeholder="이름 이니셜 (예: KSY)" autocapitalize="characters"><br><br>
+ <input type="text" id="sess" placeholder="세션 코드 (예: PU)" autocapitalize="characters"></div>
+ <button class="primary" onclick="go2()">시작하기</button>`}
+function go2(){
+ if(!c1.checked||!c2.checked){alert('동의 항목을 확인해주세요.');return}
+ if(!c3.checked){app.innerHTML='<div class="card"><p>이 설문은 온라인 쇼핑 경험자를 대상으로 합니다. 참여해주셔서 감사합니다!</p></div>';return}
+ S.code=code.value.trim().toUpperCase();S.sess=sess.value.trim().toUpperCase();
+ if(!S.code||!M.sessions[S.sess]){alert('코드를 확인해주세요.');return}
+ const saved=localStorage.getItem(KEY());
+ if(saved){const p=JSON.parse(saved);S.items=p.items;S.idx=p.idx;S.recs=p.recs;screen3();return}
+ buildItems();screen2()}
+function buildItems(){
+ const cfg=M.sessions[S.sess];const r=rng(S.code+'|'+S.sess);
+ const pool=(cfg.pool==='pilot'?M.pilot:M.main).slice();
+ let items=shuffle(pool,r).map(u=>({uid:u,tag:'main'}));
+ const inserts=M.golden.map(g=>({uid:g.uid,tag:'golden_'+g.cls})).concat(M.dups.filter(u=>pool.includes(u)).map(u=>({uid:u,tag:'dup'})));
+ shuffle(inserts,r).forEach(it=>{const pos=5+Math.floor(r()*(items.length-5));items.splice(pos,0,it)});
+ S.items=M.practice.map(u=>({uid:u,tag:'practice'})).concat(items)}
+function screen2(){const qq=Q[M.sessions[S.sess].axis];app.innerHTML=`
+ <h1>${qq.title}</h1>
+ <div class="card"><h2>질문</h2><p class="q">${qq.q}</p></div>
+ <div class="card"><h2>점수 기준</h2><p class="anchor">${qq.anchors.join('<br>')}</p></div>
+ <div class="card"><h2>주의</h2><p>· <b>사진</b>을 평가하는 것입니다 — 모델의 외모나 몸매를 평가하지 마세요.<br>· 옷이 내 취향인지도 평가 대상이 아닙니다.<br>· 너무 오래 고민하지 말고 직관적으로 답해주세요.<br>· 처음 5장은 연습입니다(점수 미집계).</p></div>
+ <button class="primary" onclick="screen3()">평가 시작</button>`}
+function screen3(){
+ if(S.idx>=S.items.length){finish();return}
+ const it=S.items[S.idx];const qq=Q[M.sessions[S.sess].axis];
+ const practice=it.tag==='practice'?' <span style="color:#4a7dff">(연습)</span>':'';
+ app.innerHTML=`
+ <div class="bar"><div style="width:${(100*S.idx/S.items.length).toFixed(1)}%"></div></div>
+ <div class="prog">${S.idx+1} / ${S.items.length}${practice}</div>
+ <img class="photo" src="images/${it.uid}.webp" alt="사진">
+ <p class="q">${qq.q}</p>
+ <div class="rate">${[1,2,3,4,5].map(v=>`<button onclick="rate(${v})">${v}</button>`).join('')}</div>
+ ${S.idx>0?'<button class="back" onclick="back()">← 이전으로</button>':''}`;
+ S.t0=Date.now()}
+function rate(v){const it=S.items[S.idx];
+ S.recs.push({uid:it.uid,tag:it.tag,v:v,ms:Date.now()-S.t0,idx:S.idx});
+ S.idx++;localStorage.setItem(KEY(),JSON.stringify({items:S.items,idx:S.idx,recs:S.recs}));screen3()}
+function back(){if(S.idx<1)return;S.idx--;S.recs=S.recs.filter(r=>r.idx!==S.idx);
+ localStorage.setItem(KEY(),JSON.stringify({items:S.items,idx:S.idx,recs:S.recs}));screen3()}
+function finish(){
+ const out={version:M.version,code:S.code,session:S.sess,done_at:new Date().toISOString(),ratings:S.recs};
+ const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);
+ app.innerHTML=`<h1>완료! 감사합니다 🎉</h1>
+ <div class="card"><p>아래 버튼으로 결과 파일을 저장한 뒤, <b>현수에게 카톡이나 메일로</b> 보내주세요.</p><br>
+ <a href="${url}" download="ratings_${S.code}_${S.sess}.json"><button class="primary">결과 파일 저장</button></a><br><br>
+ <button class="back" onclick="copyOut()">파일이 안 되면: 결과 텍스트 복사</button></div>`;
+ window._out=JSON.stringify(out)}
+function copyOut(){navigator.clipboard.writeText(window._out).then(()=>alert('복사됨 — 카톡에 붙여넣어 보내주세요.'))}
+window.go2=go2;window.rate=rate;window.back=back;window.copyOut=copyOut;
+screen1();
+</script></body></html>
