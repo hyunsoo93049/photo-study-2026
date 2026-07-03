@@ -49,15 +49,27 @@ function screen1(){app.innerHTML=`
  <div class="card"><h2>간단 확인</h2>
  <label><input type="checkbox" id="c3"> 온라인에서 옷을 월 1회 이상 구경/구매합니다</label></div>
  <div class="card"><h2>참여 코드</h2>
- <p>안내받은 코드를 입력하세요.</p><br>
- <input type="text" id="code" placeholder="이름 이니셜 (예: KSY)" autocapitalize="characters"><br><br>
- <input type="text" id="sess" placeholder="세션 코드 (예: PU)" autocapitalize="characters"></div>
+ <p>본인 이름 이니셜을 입력하세요. (1·2차 모두 동일하게)</p><br>
+ <input type="text" id="code" placeholder="이름 이니셜 (예: KSY)" autocapitalize="characters">
+ <p id="codeErr" style="color:#ff7a7a;font-size:13px;display:none">이니셜을 입력해주세요.</p></div>
+ <div class="card"><h2>세션 선택</h2>
+ <p>안내받은 세션을 누르세요.</p><br>
+ <div class="rate" style="margin-top:4px">
+   <button id="bPU" style="max-width:none;height:52px;font-size:15px" onclick="pickSess('PU')">PU · 옷 판단</button>
+   <button id="bPA" style="max-width:none;height:52px;font-size:15px" onclick="pickSess('PA')">PA · 사진 느낌</button>
+ </div>
+ <p id="sessErr" style="color:#ff7a7a;font-size:13px;display:none">세션을 선택해주세요.</p></div>
  <button class="primary" onclick="go2()">시작하기</button>`}
+function pickSess(v){S.sess=v;
+ for(const id of ['bPU','bPA']){document.getElementById(id).style.background='#2c2c2e'}
+ document.getElementById('b'+v).style.background='#4a7dff'}
 function go2(){
  if(!c1.checked||!c2.checked){alert('동의 항목을 확인해주세요.');return}
  if(!c3.checked){app.innerHTML='<div class="card"><p>이 설문은 온라인 쇼핑 경험자를 대상으로 합니다. 참여해주셔서 감사합니다!</p></div>';return}
- S.code=code.value.trim().toUpperCase();S.sess=sess.value.trim().toUpperCase();
- if(!S.code||!M.sessions[S.sess]){alert('코드를 확인해주세요.');return}
+ S.code=code.value.trim().toUpperCase();
+ document.getElementById('codeErr').style.display=S.code?'none':'block';
+ document.getElementById('sessErr').style.display=M.sessions[S.sess]?'none':'block';
+ if(!S.code||!M.sessions[S.sess])return;
  const saved=localStorage.getItem(KEY());
  if(saved){const p=JSON.parse(saved);S.items=p.items;S.idx=p.idx;S.recs=p.recs;screen3();return}
  buildItems();screen2()}
@@ -101,6 +113,6 @@ function finish(){
  <button class="back" onclick="copyOut()">파일이 안 되면: 결과 텍스트 복사</button></div>`;
  window._out=JSON.stringify(out)}
 function copyOut(){navigator.clipboard.writeText(window._out).then(()=>alert('복사됨 — 카톡에 붙여넣어 보내주세요.'))}
-window.go2=go2;window.rate=rate;window.back=back;window.copyOut=copyOut;
+window.go2=go2;window.pickSess=pickSess;window.rate=rate;window.back=back;window.copyOut=copyOut;
 screen1();
 </script></body></html>
