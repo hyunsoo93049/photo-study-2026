@@ -84,7 +84,7 @@ function screen2(){const qq=Q[M.sessions[S.sess].axis];app.innerHTML=`
  <h1>${qq.title}</h1>
  <div class="card"><h2>질문</h2><p class="q">${qq.q}</p></div>
  <div class="card"><h2>점수 기준</h2><p class="anchor">${qq.anchors.join('<br>')}</p></div>
- <div class="card"><h2>주의</h2><p>· <b>사진</b>을 평가하는 것입니다 — 모델의 외모나 몸매를 평가하지 마세요.<br>· 옷이 내 취향인지도 평가 대상이 아닙니다.<br>· 너무 오래 고민하지 말고 직관적으로 답해주세요.<br>· 처음 5장은 연습입니다(점수 미집계).</p></div>
+ <div class="card"><h2>주의</h2><p>· <b>사진</b>을 평가하는 것입니다 — 모델의 외모나 몸매를 평가하지 마세요.<br>· 옷이 내 취향인지도 평가 대상이 아닙니다.<br>· 여러 옷이 보이면 <b>사진에 보이는 옷 전반</b>을 기준으로 답하세요 (특정 상품의 후기라고 가정하지 마세요).<br>· 너무 오래 고민하지 말고 직관적으로 답해주세요.<br>· 처음 5장은 연습입니다(점수 미집계).</p></div>
  <button class="primary" onclick="screen3()">평가 시작</button>`}
 function screen3(){
  if(S.idx>=S.items.length){finish();return}
