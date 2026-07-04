@@ -32,7 +32,7 @@ const Q = {
     q:"당신이 이 옷을 살지 고민하는 쇼핑객이라고 상상하세요.<br>이 사진이 옷을 판단(핏·기장·실루엣·재질)하는 데<br>얼마나 도움이 됩니까?",
     anchors:["1 = 판단 불가 (흐림·역광·옷이 거의 안 보임)","2 = 대부분 안 보임 (가림·어두움·잘림)","3 = 절반 정도 판단 가능 (예: 상의만 보임)","4 = 대체로 보이나 일부 아쉬움","5 = 핏·기장·재질까지 다 보여 바로 판단 가능"]},
  a:{title:"사진의 미적 완성도",
-    q:"옷 정보와 무관하게,<br>사진 자체가 미적으로 얼마나 훌륭합니까?<br>(구도·색감·분위기)",
+    q:"이 사진 자체가 미적으로 얼마나 훌륭합니까?<br>(구도·색감·분위기)",
     anchors:["1 = 구도가 무너짐·흐림·산만함","2 = 아쉬움이 많음","3 = 평범함","4 = 좋은 편 (저장하고 싶은 정도)","5 = 매우 훌륭함 (감성·구도·색감 모두)"]}};
 function hash(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return(h^=h>>>16)>>>0}}
 function rng(seed){let a=hash(seed)();return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -85,7 +85,7 @@ function buildItems(){
   return}
  const pool=(cfg.pool==='pilot'?M.pilot:M.main).slice();
  let items=shuffle(pool,r).map(u=>({uid:u,tag:'main'}));
- const inserts=M.golden.map(g=>({uid:g.uid,tag:'golden_'+g.cls})).concat(M.dups.filter(u=>pool.includes(u)).map(u=>({uid:u,tag:'dup'})));
+ const inserts=(cfg.axis==='u'?M.golden.map(g=>({uid:g.uid,tag:'golden_'+g.cls})):[]).concat(M.dups.filter(u=>pool.includes(u)).map(u=>({uid:u,tag:'dup'})));
  shuffle(inserts,r).forEach(it=>{const pos=5+Math.floor(r()*(items.length-5));items.splice(pos,0,it)});
  S.items=M.practice.map(u=>({uid:u,tag:'practice'})).concat(items)}
 function screen2(){const qq=Q[M.sessions[S.sess].axis];app.innerHTML=`
@@ -103,6 +103,8 @@ function screen3(){
  <div class="prog">${S.idx+1} / ${S.items.length}${practice}</div>
  <img class="photo" src="images/${it.uid}.webp" alt="사진">
  <p class="q">${qq.q}</p>
+ <p style="text-align:center;margin:4px 0"><button class="back" style="font-size:11px;padding:3px 10px" onclick="document.getElementById('anch').style.display=document.getElementById('anch').style.display==='none'?'block':'none'">점수 기준 보기</button></p>
+ <p id="anch" class="anchor" style="display:none;background:#1c1c1e;border-radius:8px;padding:8px">${qq.anchors.join('<br>')}</p>
  <div class="rate">${[1,2,3,4,5].map(v=>`<button onclick="rate(${v})">${v}</button>`).join('')}</div>
  ${S.idx>0?'<button class="back" onclick="back()">← 이전으로</button>':''}`;
  S.t0=Date.now()}
