@@ -123,7 +123,7 @@ function finish(){ sync(true);
  const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
  const url=URL.createObjectURL(blob);
  app.innerHTML=`<h1>완료! 감사합니다 🎉</h1>
- <div class="card"><p>아래 버튼으로 결과 파일을 저장한 뒤, <b>현수에게 카톡이나 메일로</b> 보내주세요.</p><br>
+ <div class="card"><p style="font-size:17px"><b>응답이 자동으로 전송되었습니다.</b><br>따로 보내실 것 없어요 👍</p><br><p style="font-size:13px;color:#888">혹시 전송이 안 됐을 경우를 대비한 백업 버튼입니다. 현수가 요청하면 그때 아래 파일을 보내주세요.</p><br>
  <a href="${url}" download="ratings_${S.code}_${S.sess}.json"><button class="primary">결과 파일 저장</button></a><br><br>
  <button class="back" onclick="copyOut()">저장이 안 되면: 결과 텍스트 복사</button><br><br>
  <p style="font-size:12px;color:#888">둘 다 안 되면 아래 상자를 길게 눌러 전체 선택 → 복사 → 카톡에 붙여넣기</p>
