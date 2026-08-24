@@ -108,12 +108,17 @@ function screen3(){
  <div class="rate">${[1,2,3,4,5].map(v=>`<button onclick="rate(${v})">${v}</button>`).join('')}</div>
  ${S.idx>0?'<button class="back" onclick="back()">← 이전으로</button>':''}`;
  S.t0=Date.now()}
+const SYNC_URL="https://script.google.com/macros/s/AKfycbwNu7_ggdq9MizaxrpmblfwORF17XgECi0q76zvgVvbERSH_UIUNeV4nA9bmsQOzDem0w/exec";/* Apps Script /exec URL — 비어 있으면 업로드 기능 꺼짐 */
+function sync(done){ if(!SYNC_URL) return; try{
+  const p={version:M.version,code:S.code,session:S.sess,idx:S.idx,done:!!done,ts:new Date().toISOString(),ratings:S.recs};
+  fetch(SYNC_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(p)});
+ }catch(e){} }
 function rate(v){const it=S.items[S.idx];
  S.recs.push({uid:it.uid,tag:it.tag,v:v,ms:Date.now()-S.t0,idx:S.idx});
- S.idx++;localStorage.setItem(KEY(),JSON.stringify({items:S.items,idx:S.idx,recs:S.recs}));screen3()}
+ S.idx++;localStorage.setItem(KEY(),JSON.stringify({items:S.items,idx:S.idx,recs:S.recs}));if(S.recs.length%10===0)sync(false);screen3()}
 function back(){if(S.idx<1)return;S.idx--;S.recs=S.recs.filter(r=>r.idx!==S.idx);
  localStorage.setItem(KEY(),JSON.stringify({items:S.items,idx:S.idx,recs:S.recs}));screen3()}
-function finish(){
+function finish(){ sync(true);
  const out={version:M.version,code:S.code,session:S.sess,done_at:new Date().toISOString(),ratings:S.recs};
  const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
  const url=URL.createObjectURL(blob);
